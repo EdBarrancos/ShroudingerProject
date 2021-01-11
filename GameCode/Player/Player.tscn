@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://ProtoArtAssets/Cat Game.png" type="Texture" id=1]
+[ext_resource path="res://ProtoArtAssets/PlayerProto.png" type="Texture" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8.45347, 19.7648 )
+extents = Vector2( 3.82445, 9.53231 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
+position = Vector2( 0.0190964, 0.0461235 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -14,9 +15,11 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 3
-frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 3.14979, 12.2842 )
+position = Vector2( -0.00121117, 5.47662 )
 shape = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.6, 0.6 )
