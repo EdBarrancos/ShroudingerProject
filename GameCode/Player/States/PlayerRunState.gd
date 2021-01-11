@@ -10,9 +10,9 @@ var walkSpeed = 200
 func getName():
 	return "PlayerRunState"
 
-func enter(player):
-	.enter(player)
-	print(getName())
+func enter(player, debugState):
+	.enter(player, debugState)
+	if debugState: print(getName())
 
 func getInput():
 	if Input.is_action_pressed("RIGHT"):

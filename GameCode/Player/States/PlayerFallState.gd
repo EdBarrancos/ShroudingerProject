@@ -8,9 +8,9 @@ var PlayerIdleState = load("res://Player/States/PlayerIdleState.gd")
 func getName():
 	return "PlayerFallingState"
 
-func enter(player):
-	.enter(player)
-	print(getName())
+func enter(player, debugState):
+	.enter(player, debugState)
+	if debugState: print(getName())
 
 
 func getInput():

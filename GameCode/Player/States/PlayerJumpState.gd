@@ -9,9 +9,10 @@ var PlayerFallState = load("res://Player/States/PlayerFallState.gd")
 func getName():
 	return "PlayerJumpState"
 
-func enter(player):
-	.enter(player)
-	print(getName())
+func enter(player, debugState):
+	.enter(player, debugState)
+	player.setForcedJumped(0)
+	if debugState: print(getName())
 
 
 func getInput():

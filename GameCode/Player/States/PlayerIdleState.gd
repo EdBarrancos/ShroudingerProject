@@ -8,9 +8,9 @@ var PlayerFallState = load("res://Player/States/PlayerFallState.gd")
 func getName():
 	return "PlayerIdleState"
 
-func enter(player):
-	.enter(player)
-	print(getName())
+func enter(player, debugState):
+	.enter(player, debugState)
+	if debugState: print(getName())
 
 
 func getInput():
@@ -22,7 +22,7 @@ func getInput():
 		player.state.setState(PlayerRunState.new())
 	else: player.setSpeedX(player.getDECELL(), 0, false, true)
 		
-	if Input.is_action_pressed("UP"):
+	if Input.is_action_just_pressed("UP"):
 		self.player.jump()
 		
 func _physics_process(_delta):

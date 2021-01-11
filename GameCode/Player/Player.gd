@@ -5,6 +5,9 @@ onready var sprite = $Sprite
 var state 
 enum states {IDLE, RUNNING, FALLING, JUMPING}
 
+#Ray Casting
+onready var rightRay = $RightDetection
+
 
 var UP = Vector2(0, -1)
 export var Grav = 40
@@ -27,7 +30,7 @@ func _ready():
 	#state = states.IDLE
 	# Initialize state.
 	state = PlayerIdleState.new()
-	state.enter(self)
+	state.enter(self, false)
 	add_child(state)
 
 #input and changing state is handled by the states themselves
@@ -36,8 +39,8 @@ func _ready():
 func _physics_process(delta):
 	# Update the current state; handle switching.
 	state.call("_physics_process", delta)
-
-
+	
+	print(rightRay.is_colliding())
 ################################
 #Variable Setters and Getters
 ################################
@@ -173,7 +176,6 @@ func jump(fallthrough=false):
 		setSpeedY(JUMPFORCE, 0, false)
 		state.setState(PlayerJumpState.new())
 	else:
-		print("Fallingthrough")
 		setSpeedY(JUMPACELL)
 		ForcedJumped -= JUMPACELL
 		if ForcedJumped >= (-JUMPACELL)*JUMPTICKSFALLTHROUGH:
