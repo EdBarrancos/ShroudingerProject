@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ProtoArtAssets/PlayerProto.png" type="Texture" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
+[ext_resource path="res://Player/PlayerRayCasts.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3.82445, 9.53231 )
@@ -24,9 +25,29 @@ shape = SubResource( 1 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
-[node name="RightDetection" type="RayCast2D" parent="."]
+[node name="PlayerRayCasts" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="RightDetectionTop" type="RayCast2D" parent="PlayerRayCasts"]
+position = Vector2( 0, -4 )
 enabled = true
-cast_to = Vector2( 10, 0 )
-collision_mask = 3
-collide_with_areas = true
-collide_with_bodies = false
+cast_to = Vector2( 4, 0 )
+collision_mask = 2
+
+[node name="RightDetectionBottom" type="RayCast2D" parent="PlayerRayCasts"]
+position = Vector2( 0, 15 )
+enabled = true
+cast_to = Vector2( 0, 0 )
+collision_mask = 2
+
+[node name="LeftDetectionTop" type="RayCast2D" parent="PlayerRayCasts"]
+position = Vector2( 0, -4 )
+enabled = true
+cast_to = Vector2( 0, 0 )
+collision_mask = 2
+
+[node name="LeftDetectionBottom" type="RayCast2D" parent="PlayerRayCasts"]
+position = Vector2( 0, 15 )
+enabled = true
+cast_to = Vector2( 0, 0 )
+collision_mask = 2

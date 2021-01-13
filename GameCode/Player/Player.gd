@@ -6,7 +6,7 @@ var state
 enum states {IDLE, RUNNING, FALLING, JUMPING}
 
 #Ray Casting
-onready var rightRay = $RightDetection
+onready var rayCasts = $PlayerRayCasts
 
 
 var UP = Vector2(0, -1)
@@ -27,11 +27,13 @@ export var DECELL = 0.4
 
 
 func _ready():
-	#state = states.IDLE
 	# Initialize state.
 	state = PlayerIdleState.new()
 	state.enter(self, false)
 	add_child(state)
+	
+	#Set up RayCasts
+	rayCastSetting()
 
 #input and changing state is handled by the states themselves
 
@@ -40,7 +42,8 @@ func _physics_process(delta):
 	# Update the current state; handle switching.
 	state.call("_physics_process", delta)
 	
-	print(rightRay.is_colliding())
+	print(rayCasts.collidingLeft())
+	
 ################################
 #Variable Setters and Getters
 ################################
@@ -186,7 +189,6 @@ func applyGravity():
 	setSpeedY(Grav, MAXFALLSPEED)
 	
 	
-
 ##############################
 #Auxiliary Stuff
 ##############################
@@ -195,3 +197,6 @@ func getValueSign(value):
 	if value > 0: return 1
 	elif value < 0: return -1
 	else: return 0
+	
+func rayCastSetting():
+	rayCasts.setRayCastTo(sprite.texture.get_width()/4)
