@@ -16,6 +16,8 @@ export var JUMPFORCE = -450
 export var JUMPACELL = -60
 var ForcedJumped = 0
 export var JUMPTICKSFALLTHROUGH = 6
+export var wallGrav = 0.2
+export var MAXFALLWALLSPEED = 30
 
 export var AirbornAcellFactor = 1.5
 export var AirbornDecellFactor = 0.75
@@ -42,7 +44,8 @@ func _physics_process(delta):
 	# Update the current state; handle switching.
 	state.call("_physics_process", delta)
 	
-	print(rayCasts.collidingLeft())
+	print(state.getName())
+	
 	
 ################################
 #Variable Setters and Getters
@@ -60,11 +63,23 @@ func setGrav(newGrav):
 	Grav = newGrav
 	return Grav
 	
+#wallGrav
+func getWallGrav(): return wallGrav
+func setWallGrav(newWallGrav):
+	wallGrav = newWallGrav
+	return wallGrav
+	
 #MAXFALLSPEED
 func getMAXFALLSPEED(): return MAXFALLSPEED
 func setMAXFALLSPEED(newMAXFALLSPEED):
 	MAXFALLSPEED = newMAXFALLSPEED
 	return MAXFALLSPEED
+	
+#MAXFALLWALLSPEED
+func getMAXFALLWALLSPEED(): return MAXFALLWALLSPEED
+func setMAXFALLWALLSPEED(newMAXFALLWALLSPEED):
+	MAXFALLWALLSPEED = newMAXFALLWALLSPEED
+	return MAXFALLWALLSPEED
 	
 #JUMPFORCE
 func getJUMPFORCE(): return JUMPFORCE
@@ -188,6 +203,13 @@ func jump(fallthrough=false):
 func applyGravity():
 	setSpeedY(Grav, MAXFALLSPEED)
 	
+func applyWallGravity():
+	setSpeedY(Grav*wallGrav, MAXFALLWALLSPEED)
+	
+func collidingSlidableWall(): return rayCasts.collidingLeft() or rayCasts.collidingRight()
+
+func collidingSlidableWallRight(): return rayCasts.collidingRight()
+func collidingSlidableWallLeft(): return rayCasts.collidingLeft()
 	
 ##############################
 #Auxiliary Stuff

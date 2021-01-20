@@ -32,6 +32,7 @@ func getInput():
 func _physics_process(delta):
 	#Check for state changes
 	if player.is_on_floor(): player.state.setState(PlayerIdleState.new())
+	if player.collidingSlidableWall(): player.state.setState(PlayerWallSlideState.new())
 		
 	player.applyGravity()
 	getInput()

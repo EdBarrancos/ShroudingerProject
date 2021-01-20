@@ -33,13 +33,19 @@ _global_script_classes=[ {
 "class": "PlayerState",
 "language": "GDScript",
 "path": "res://Player/States/PlayerState.gd"
+}, {
+"base": "PlayerState",
+"class": "PlayerWallSlideState",
+"language": "GDScript",
+"path": "res://Player/States/PlayerWallSlideState.gd"
 } ]
 _global_script_class_icons={
 "PlayerFallState": "",
 "PlayerIdleState": "",
 "PlayerJumpState": "",
 "PlayerRunState": "",
-"PlayerState": ""
+"PlayerState": "",
+"PlayerWallSlideState": ""
 }
 
 [application]

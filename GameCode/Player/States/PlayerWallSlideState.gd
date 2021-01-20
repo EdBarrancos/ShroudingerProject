@@ -1,34 +1,39 @@
 extends PlayerState
 
-class_name PlayerFallState
+class_name PlayerWallSlideState
 
 var PlayerRunState = load("res://Player/States/PlayerRunState.gd")
 var PlayerIdleState = load("res://Player/States/PlayerIdleState.gd")
 
+var rightWall
+
 func getName():
-	return "PlayerFallingState"
+	return "PlayerWallSlideState"
 
 func enter(player, debugState):
 	.enter(player, debugState)
 	if debugState: print(getName())
-
+	
+	player.setSpeedY(0, 0, false)
+	if player.collidingSlidableWallRight(): rightWall = true
+	else: rightWall = false
 
 func getInput():
-	if Input.is_action_pressed("RIGHT"):
+	if Input.is_action_just_pressed("RIGHT") and rightWall:
 		player.turnRight()
 		player.setSpeedX(player.getAirbornMovementAcell()*Input.get_action_strength("RIGHT"), player.getMAXSPEED())
-	elif Input.is_action_pressed("LEFT"):
+		player.state.setState(PlayerIdleState.new())
+	elif Input.is_action_just_pressed("LEFT") and not rightWall:
 		player.turnLeft()
 		player.setSpeedX(-player.getAirbornMovementAcell()*Input.get_action_strength("LEFT"), player.getMAXSPEED())
-	else: player.setSpeedX(player.getAirbornMovementDecell(), 0, false, true)
+		player.state.setState(PlayerIdleState.new())
 		
 func _physics_process(delta):
 	#Check State changes
-	if player.is_on_floor(): player.state.setState(PlayerIdleState.new())
+	if player.is_on_floor():
+		player.state.setState(PlayerIdleState.new())
 		
-	if player.collidingSlidableWall(): player.state.setState(PlayerWallSlideState.new())
-		
-	player.applyGravity()
+	player.applyWallGravity()
 	getInput()
 	player.movePlayerNormally()
 	
