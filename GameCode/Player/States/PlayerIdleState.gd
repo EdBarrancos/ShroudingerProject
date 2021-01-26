@@ -29,8 +29,6 @@ func _physics_process(_delta):
 	#Check for state changes
 	if !player.is_on_floor(): player.state.setState(PlayerFallState.new())
 	
-	if player.collidingSlidableWall(): player.state.setState(PlayerWallSlideState.new())
-	
 	player.applyGravity()
 	getInput()
 	player.movePlayerNormally()

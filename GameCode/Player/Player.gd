@@ -10,20 +10,23 @@ onready var rayCasts = $PlayerRayCasts
 
 
 var UP = Vector2(0, -1)
-export var Grav = 40
-export var MAXFALLSPEED = 200
-export var JUMPFORCE = -450
-export var JUMPACELL = -60
+export var Grav = 12
+export var MAXFALLSPEED = 230
+export var JUMPFORCE = -150
+export var JUMPACELL = -30
 var ForcedJumped = 0
-export var JUMPTICKSFALLTHROUGH = 6
-export var wallGrav = 0.2
+export var JUMPTICKSFALLTHROUGH = 10
+export var wallGrav = 0.4
+export var holdingWallGrav = 0.05
+export var stamina = 100
 export var MAXFALLWALLSPEED = 30
 
-export var AirbornAcellFactor = 1.5
-export var AirbornDecellFactor = 0.75
+export var AirbornAcellFactor = 0.7
+export var AirbornDecellFactor = 0.7
 
-export var MAXSPEED = 200
-export var ACELL = 30
+export var MAXSPEED = 150
+export var ACELL = 100
+export var wallSideJumpMulti = 3
 export var velocity = Vector2.ZERO
 export var DECELL = 0.4
 
@@ -68,7 +71,20 @@ func getWallGrav(): return wallGrav
 func setWallGrav(newWallGrav):
 	wallGrav = newWallGrav
 	return wallGrav
+
+#holdingWallGrav
+func getholdingWallGrav(): return holdingWallGrav
+func setholdingWallGrav(newholdingWallGrav):
+	holdingWallGrav = newholdingWallGrav
+	return holdingWallGrav
 	
+#stamina
+func getStamina(): return stamina
+func setStamina(newStamina):
+	stamina = newStamina
+	return stamina
+
+
 #MAXFALLSPEED
 func getMAXFALLSPEED(): return MAXFALLSPEED
 func setMAXFALLSPEED(newMAXFALLSPEED):
@@ -128,6 +144,12 @@ func getACELL(): return ACELL
 func setACELL(newACELL):
 	ACELL = newACELL
 	return ACELL
+	
+#wallSideJumpMulti
+func getwallSideJumpMulti(): return wallSideJumpMulti
+func setwallSideJumpMulti(newwallSideJumpMulti):
+	wallSideJumpMulti = newwallSideJumpMulti;
+	return wallSideJumpMulti
 
 #velocity
 func getvelocity(): return velocity
@@ -185,7 +207,7 @@ func setSpeedY(value, maxvalue=0, adding=true, gradual=false):
 			velocity.y += value
 		else: velocity.y = value
 		
-		if maxvalue: velocity.x = clamp(velocity.x, -maxvalue, maxvalue)
+		if maxvalue: velocity.y = clamp(velocity.y, -maxvalue, maxvalue)
 	else: velocity.y = lerp(velocity.y, maxvalue, value)
 	return velocity
 	
@@ -200,11 +222,9 @@ func jump(fallthrough=false):
 			ForcedJumped = 0
 			state.setState(PlayerFallState.new())
 			
-func applyGravity():
-	setSpeedY(Grav, MAXFALLSPEED)
-	
-func applyWallGravity():
-	setSpeedY(Grav*wallGrav, MAXFALLWALLSPEED)
+func applyGravity(multiplier=1):
+	print(multiplier)
+	setSpeedY(Grav*multiplier, MAXFALLSPEED*multiplier)
 	
 func collidingSlidableWall(): return rayCasts.collidingLeft() or rayCasts.collidingRight()
 
