@@ -11,6 +11,8 @@ func getName():
 func enter(player, debugState):
 	.enter(player, debugState)
 	if debugState: print(getName())
+	
+	player.resetCurrentStamina()
 
 
 func getInput():

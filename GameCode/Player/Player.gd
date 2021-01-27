@@ -19,6 +19,7 @@ export var JUMPTICKSFALLTHROUGH = 10
 export var wallGrav = 0.4
 export var holdingWallGrav = 0.05
 export var stamina = 100
+var currentStamina = 100
 export var MAXFALLWALLSPEED = 30
 
 export var AirbornAcellFactor = 0.7
@@ -26,7 +27,7 @@ export var AirbornDecellFactor = 0.7
 
 export var MAXSPEED = 150
 export var ACELL = 100
-export var wallSideJumpMulti = 3
+export var wallSideJumpMulti = 20
 export var velocity = Vector2.ZERO
 export var DECELL = 0.4
 
@@ -84,6 +85,11 @@ func setStamina(newStamina):
 	stamina = newStamina
 	return stamina
 
+#currentStamina
+func getcurrentStamina(): return currentStamina
+func setcurrentStamina(newcurrentStamina):
+	currentStamina = newcurrentStamina
+	return currentStamina
 
 #MAXFALLSPEED
 func getMAXFALLSPEED(): return MAXFALLSPEED
@@ -223,7 +229,6 @@ func jump(fallthrough=false):
 			state.setState(PlayerFallState.new())
 			
 func applyGravity(multiplier=1):
-	print(multiplier)
 	setSpeedY(Grav*multiplier, MAXFALLSPEED*multiplier)
 	
 func collidingSlidableWall(): return rayCasts.collidingLeft() or rayCasts.collidingRight()
@@ -242,3 +247,11 @@ func getValueSign(value):
 	
 func rayCastSetting():
 	rayCasts.setRayCastTo(sprite.texture.get_width()/4)
+	
+func subtractCurrentStamina(value=1):
+	currentStamina -= value
+	return currentStamina
+
+func resetCurrentStamina():
+	currentStamina = stamina
+	return currentStamina

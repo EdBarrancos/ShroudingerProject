@@ -10,7 +10,6 @@ var PlayerIdleState = load("res://Player/States/PlayerIdleState.gd")
 
 var rightWall
 var gravMultiplier
-var currentStamina
 
 func getName():
 	return "PlayerWallSlideState"
@@ -24,7 +23,6 @@ func enter(player, debugState):
 	else: rightWall = false
 	
 	gravMultiplier = player.getWallGrav()
-	currentStamina = player.getStamina()
 
 func getInput():
 	#Detatch from wall
@@ -41,22 +39,22 @@ func getInput():
 	if Input.is_action_just_pressed("UP"): 
 		if rightWall:
 			player.turnLeft()
-			player.setSpeedX(-player.getACELL()*player.getwallSideJumpMulti(), player.getMAXSPEED(), false)
+			player.setSpeedX(-player.getACELL()*player.getwallSideJumpMulti(), player.getMAXSPEED()*player.getwallSideJumpMulti(), false)
 		elif not rightWall:
 			player.turnRight()
-			player.setSpeedX(player.getACELL()*player.getwallSideJumpMulti(), player.getMAXSPEED(), false)
+			player.setSpeedX(player.getACELL()*player.getwallSideJumpMulti(), player.getMAXSPEED()*player.getwallSideJumpMulti(), false)
 		player.jump()
 	
 	#SlowDown WallDecend
-	if currentStamina:
+	if player.getcurrentStamina():
 		if Input.is_action_pressed("RIGHT") and rightWall:
 			player.turnRight()
 			gravMultiplier = player.getholdingWallGrav()
-			currentStamina -= 1;
+			player.subtractCurrentStamina()
 		elif Input.is_action_pressed("LEFT") and not rightWall:
 			player.turnLeft()
 			gravMultiplier = player.getholdingWallGrav()
-			currentStamina -= 1;
+			player.subtractCurrentStamina()
 		else: gravMultiplier = player.getWallGrav()
 	else: gravMultiplier = player.getWallGrav()
 		
