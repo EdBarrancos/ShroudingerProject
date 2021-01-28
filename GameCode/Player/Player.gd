@@ -48,8 +48,6 @@ func _physics_process(delta):
 	# Update the current state; handle switching.
 	state.call("_physics_process", delta)
 	
-	print(state.getName())
-	
 	
 ################################
 #Variable Setters and Getters
