@@ -29,6 +29,13 @@ shape = SubResource( 1 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
+[node name="DashRange" type="Area2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRange"]
+position = Vector2( 0.00525475, 5.50184 )
+shape = SubResource( 2 )
+
 [node name="PlayerRayCasts" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
@@ -55,12 +62,5 @@ position = Vector2( 0, 15 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 2
-
-[node name="DashRange" type="Area2D" parent="PlayerRayCasts"]
-script = ExtResource( 4 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerRayCasts/DashRange"]
-position = Vector2( 0.00525475, 5.50184 )
-shape = SubResource( 2 )
-[connection signal="area_entered" from="PlayerRayCasts/DashRange" to="PlayerRayCasts/DashRange" method="_on_DashRange_area_entered"]
-[connection signal="area_exited" from="PlayerRayCasts/DashRange" to="PlayerRayCasts/DashRange" method="_on_DashRange_area_exited"]
+[connection signal="area_entered" from="DashRange" to="DashRange" method="_on_DashRange_area_entered"]
+[connection signal="area_exited" from="DashRange" to="DashRange" method="_on_DashRange_area_exited"]
