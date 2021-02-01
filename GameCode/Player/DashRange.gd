@@ -3,19 +3,23 @@ extends Area2D
 var currentArea
 var lengthOfCurrentArea
 
-onready var rayCast = RayCast2D
+onready var rayCast = $RayCastDash
+onready var line = $Line2D
 
 onready var availableDashables = []
 
 
 func _ready():
-	pass
+	rayCast.add_exception(owner)
 
 
 func _physics_process(delta):
 	print(availableDashables)
-	var x = 0
-	
+	if availableDashables.size() >= 1:
+		var closestDash = availableDashables[0]
+		rayCast.set_cast_to(closestDash.global_position - global_position)
+		line.set_points([Vector2.ZERO, closestDash.global_position - global_position])
+		print(rayCast.get_collider())
 	
 	
 func _on_DashRange_area_entered(area):
