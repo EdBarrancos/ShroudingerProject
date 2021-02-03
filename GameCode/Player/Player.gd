@@ -50,7 +50,7 @@ func _physics_process(delta):
 	
 	
 ################################
-#Variable Setters and Getters
+#Variable Setters and Getters###
 ################################
 
 #UP

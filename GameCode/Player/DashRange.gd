@@ -1,15 +1,57 @@
 extends Area2D
 
-var currentArea
-var lengthOfCurrentArea
-
 onready var rayCast = $RayCastDash
-onready var line = $Line2D
-onready var debug = false
+onready var line = $DebugLineDashRange
+export var debug = false
 
 onready var availableDashables = []
 onready var dashEnabled = null
 
+onready var canDash = false #True if there is an object that you can dash too
+
+################################
+#Variable Setters and Getters###
+################################
+
+#rayCast
+func getRayCast(): return rayCast
+func setRayCast(newRayCast):
+	rayCast = newRayCast
+	return rayCast
+	
+#line
+func getLine(): return line
+func setLine(newLine):
+	line = newLine
+	return line
+	
+#debug
+func getDebug(): return debug
+func setDegub(newDebug):
+	debug = newDebug
+	return debug
+	
+#availableDashables
+func getAvailableDashables(): return availableDashables
+func setAvailableDashables(newAvailableDashables):
+	availableDashables = newAvailableDashables
+	return availableDashables
+	
+#dashEnabled
+func getDashEnabled(): return dashEnabled
+func setDashEnabled(newDashEnabled):
+	dashEnabled = newDashEnabled
+	return dashEnabled
+	
+#canDash
+func getCanDash(): return canDash
+func setCanDash(newCanDash):
+	canDash = newCanDash
+	return canDash
+	
+##################
+#Main Functions###
+##################
 
 func _ready():
 	rayCast.add_exception(owner)
@@ -20,33 +62,39 @@ func _physics_process(delta):
 	var challegingDash
 	var x = 0
 	print(availableDashables)
-	if availableDashables.size() >= 2:
+	if availableDashables.size() >= 1:
 		currentDash = setAreaToDash(x, currentDash, rayCast)
 		x += 1
 		while x < availableDashables.size():
-			if currentDash == null:
-				currentDash = setAreaToDash(x, currentDash, rayCast)
-				print("CurrentDash", currentDash)
+			if currentDash == null: currentDash = setAreaToDash(x, currentDash, rayCast)
 			else:
 				challegingDash = setAreaToDash(x, challegingDash, rayCast)
 				if not isCloserThan(currentDash, challegingDash): currentDash = challegingDash
 			x += 1
+			
 	dashEnabled = currentDash
+	
+	if dashEnabled != null: canDash = true
+	else: canDash = false
+	
 	setAreaDashable(dashEnabled)
 	setAllToApprovedExcept(dashEnabled)
 		
-	
+##########################
+#Area Signal Management###
+##########################
+
 func _on_DashRange_area_entered(area):
-	print("Entered")
+	if debug: print("Entered")
 	setAreaApprovedForDash(area)
 
 func _on_DashRange_area_exited(area):
-	print("Exited")
+	if debug: print("Exited")
 	setAreaNotApprovedForDash(area)
 
-##########################
-#Area Management##########
-##########################
+######################################
+#Area And RayCast Management##########
+######################################
 
 func setAreaToDash(arrayPosition, storeArea, storeRayCast):
 	var storeAreaToSet = storeArea
@@ -60,7 +108,9 @@ func setAreaToDash(arrayPosition, storeArea, storeRayCast):
 	return storeAreaToSet
 	
 
-func isPathToDashAvailable(rayCastToSet = rayCast): return not rayCastToSet.is_colliding()
+func isPathToDashAvailable(rayCast): 
+	rayCast.force_raycast_update()
+	return not rayCast.is_colliding()
 	
 func setPathToDash(area, rayCast):
 	var rayCastToSet = rayCast
@@ -69,6 +119,8 @@ func setPathToDash(area, rayCast):
 	return rayCastToSet
 	
 func isCloserThan(currentArea, challegingArea):
+	if currentArea == null: return false
+	if challegingArea == null: return true
 	return global_position.distance_to(currentArea.global_position) <= global_position.distance_to(challegingArea.global_position)
 
 ##########################

@@ -39,7 +39,7 @@ shape = SubResource( 2 )
 [node name="RayCastDash" type="RayCast2D" parent="DashRange"]
 enabled = true
 
-[node name="Line2D" type="Line2D" parent="DashRange"]
+[node name="DebugLineDashRange" type="Line2D" parent="DashRange"]
 width = 5.0
 default_color = Color( 1, 1, 1, 1 )
 
