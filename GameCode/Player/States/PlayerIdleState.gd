@@ -27,6 +27,9 @@ func getInput():
 	if Input.is_action_just_pressed("UP"):
 		self.player.jump()
 		
+	if player.canDash() and Input.is_action_just_pressed("DASH"):
+		player.state.setState(PlayerDashState.new())
+		
 func _physics_process(_delta):
 	#Check for state changes
 	if !player.is_on_floor(): player.state.setState(PlayerFallState.new())

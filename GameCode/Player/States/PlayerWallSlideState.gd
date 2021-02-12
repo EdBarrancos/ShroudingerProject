@@ -57,6 +57,9 @@ func getInput():
 			player.subtractCurrentStamina()
 		else: gravMultiplier = player.getWallGrav()
 	else: gravMultiplier = player.getWallGrav()
+	
+	if player.canDash() and Input.is_action_just_pressed("DASH"):
+		player.state.setState(PlayerDashState.new())
 		
 func _physics_process(delta):
 	#Check State changes

@@ -28,6 +28,9 @@ func getInput():
 	#Vertical
 	if Input.is_action_pressed("UP"): player.jump(true)
 	else: player.state.setState(PlayerFallState.new())
+	
+	if player.canDash() and Input.is_action_just_pressed("DASH"):
+		player.state.setState(PlayerDashState.new())
 		
 func _physics_process(delta):
 	#Check for state changes

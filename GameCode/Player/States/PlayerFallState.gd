@@ -21,6 +21,9 @@ func getInput():
 		player.turnLeft()
 		player.setSpeedX(-player.getAirbornMovementAcell()*Input.get_action_strength("LEFT"), player.getMAXSPEED())
 	else: player.setSpeedX(player.getAirbornMovementDecell(), 0, false, true)
+	
+	if player.canDash() and Input.is_action_just_pressed("DASH"):
+		player.state.setState(PlayerDashState.new())
 		
 func _physics_process(delta):
 	#Check State changes

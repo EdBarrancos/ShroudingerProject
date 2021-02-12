@@ -61,7 +61,6 @@ func _physics_process(delta):
 	var currentDash
 	var challegingDash
 	var x = 0
-	print(availableDashables)
 	if availableDashables.size() >= 1:
 		currentDash = setAreaToDash(x, currentDash, rayCast)
 		x += 1
@@ -73,7 +72,6 @@ func _physics_process(delta):
 			x += 1
 			
 	dashEnabled = currentDash
-	
 	if dashEnabled != null: canDash = true
 	else: canDash = false
 	

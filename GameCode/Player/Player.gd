@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
 onready var sprite = $Sprite
+onready var collision = $CollisionShape2D
+onready var rayCasts = $PlayerRayCasts
+onready var dashRange = $DashRange
 
 var state 
 enum states {IDLE, RUNNING, FALLING, JUMPING}
-
-#Ray Casting
-onready var rayCasts = $PlayerRayCasts
 
 
 var UP = Vector2(0, -1)
@@ -16,11 +16,14 @@ export var JUMPFORCE = -150
 export var JUMPACELL = -30
 var ForcedJumped = 0
 export var JUMPTICKSFALLTHROUGH = 10
+export var MAXFALLWALLSPEED = 30
+
 export var wallGrav = 0.4
 export var holdingWallGrav = 0.05
 export var stamina = 100
 var currentStamina = 100
-export var MAXFALLWALLSPEED = 30
+
+export var dashVelocityModule = 20
 
 export var AirbornAcellFactor = 0.7
 export var AirbornDecellFactor = 0.7
@@ -52,6 +55,9 @@ func _physics_process(delta):
 ################################
 #Variable Setters and Getters###
 ################################
+
+#Extra
+func get_global_pos(): return global_position
 
 #UP
 func getUP(): return UP
@@ -167,6 +173,12 @@ func setDECELL(newDECELL):
 	DECELL = newDECELL
 	return DECELL
 
+#dashVelocityModule
+func getDashVelocityModule(): return dashVelocityModule
+func setDashVelocityModule(newDashVelocityModule):
+	dashVelocityModule = newDashVelocityModule
+	return dashVelocityModule
+
 ################################
 #Animation Handling
 ################################
@@ -246,6 +258,10 @@ func getValueSign(value):
 func rayCastSetting():
 	rayCasts.setRayCastTo(sprite.texture.get_width()/4)
 	
+########################
+#Stamina Management#####
+########################
+	
 func subtractCurrentStamina(value=1):
 	currentStamina -= value
 	return currentStamina
@@ -253,3 +269,12 @@ func subtractCurrentStamina(value=1):
 func resetCurrentStamina():
 	currentStamina = stamina
 	return currentStamina
+
+#####################
+#Dash Management#####
+#####################
+
+func canDash(): return dashRange.getCanDash()
+func dashToObject(): return dashRange.getDashEnabled()
+
+func distanceToDashObject(dashAble): return get_global_pos().distance_to(dashAble.get_global_pos()) 

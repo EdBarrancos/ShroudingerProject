@@ -9,7 +9,7 @@
 extents = Vector2( 3.82445, 9.53231 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 160.541
+radius = 128.786
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 position = Vector2( -0.16819, 0.139769 )
@@ -17,6 +17,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
+dashVelocityModule = 500
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

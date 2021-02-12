@@ -13,3 +13,5 @@ func approvedForDash():
 	
 func notApprovedForDash():
 	sprite.modulate = Color(1,1,1)
+
+func get_global_pos(): return global_position
